@@ -8,6 +8,10 @@ const double large = 24.0;
 const double xLarge = 48.0;
 const double bodymargin = 28.0;
 
+//const color
+
+Color titleColor = const Color.fromRGBO(54, 135, 255, 1);
+
 class Constant {
   static const textStyleAppBar = TextStyle(
     fontSize: 16.2239990234375,
@@ -29,5 +33,17 @@ class Constant {
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: Colors.black,
+  );
+
+  static const textStyleListViewText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
+  static const textStyleListViewCaptionText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: Color.fromRGBO(194, 194, 194, 1),
   );
 }
