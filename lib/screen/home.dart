@@ -15,8 +15,64 @@ class Home extends StatelessWidget {
         toolbarHeight: 63,
         leading: Image.asset('assets/image/icon.png'),
       ),
-      body: const Center(
-        child: Text('Home'),
+      body: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: large, vertical: large),
+          child: Column(
+            children: [
+              Container(
+                height: 187,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(medium),
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/image/Main Card BG.png"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: medium),
+              const Text(
+                "اطلاعات جدیدی از بازی Assassin's Creed Mirage فاش شد",
+                textDirection: TextDirection.rtl,
+                style: Constant.textStyleHome,
+              ),
+              const SizedBox(height: large),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "مشاهده همه",
+                    style: Constant.textStyleHomeLabalLeft,
+                  ),
+                  Text(
+                    "جدید ترین مطالب",
+                    style: Constant.textStyleHomeLabalRight,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: 10,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(small),
+                      child: Container(
+                        height: double.infinity,
+                        width: 250,
+                        color: Colors.pink,
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
