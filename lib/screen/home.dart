@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:ui_teach_news/constant/const.dart';
+import 'package:ui_teach_news/service/dio.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    getHomeData();
+    super.initState();
+  }
+
+  Future<void> getHomeData() async {
+    var response = await RemoteData().read(
+        url:
+            "https://maktabkhooneh.sasansafari.com/Maktabkhooneh/api/home/?command=index");
+    if (response != null) {
+      print(response.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
