@@ -38,6 +38,8 @@ class _HomeState extends State<Home> {
           future: posterModel,
           builder: (BuildContext context, AsyncSnapshot<PosterModel> snapshot) {
             if (snapshot.hasData) {
+              print("ppppppppppppppppppppp");
+              print("Snapshote++= ${snapshot.data!.image}");
               return SizedBox(
                 width: double.infinity,
                 child: Padding(

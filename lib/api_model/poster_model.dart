@@ -36,10 +36,11 @@ class PosterModel {
   }
 
   factory PosterModel.fromMap(Map<String, dynamic> map) {
+    final poster = map['poster'];
     return PosterModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      title: map['title'] != null ? map['title'] as String : null,
-      image: ApiConst.baseUrl + map['image'],
+      id: poster['id'] != null ? poster['id'] as String : null,
+      title: poster['title'] != null ? poster['title'] as String : null,
+      image: ApiConst.baseUrl + (poster['image'] ?? ''),
     );
   }
 

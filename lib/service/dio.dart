@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:ui_teach_news/constant/api_const.dart';
 
 class RemoteData {
   final Dio _dio = Dio();
@@ -26,8 +27,7 @@ class RemoteData {
 }
 
 Future<PosterModel> getHomeData() async {
-  String url =
-      "https://maktabkhooneh.sasansafari.com/Maktabkhooneh/api/home/?command=index";
+  String url = ApiConst.mainScreenUrl;
 
   final response = await http.get(Uri.parse(url));
 
@@ -35,6 +35,7 @@ Future<PosterModel> getHomeData() async {
     Map<String, dynamic> responseData = jsonDecode(response.body);
     return PosterModel.fromMap(responseData);
   } else {
-    throw Exception('Failed to load server');
+    throw Exception(
+        'Failed to load server. Status code: ${response.statusCode}');
   }
 }
