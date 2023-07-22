@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:ui_teach_news/api_model/blog_model.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 import 'package:ui_teach_news/constant/const.dart';
-import 'package:ui_teach_news/service/dio.dart';
+import 'package:ui_teach_news/screen/view_post.dart';
+import 'package:ui_teach_news/service/api.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,10 +15,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<PosterModel> posterModel;
+  late Future<BlogModel> topVisited;
   @override
   void initState() {
     posterModel = getHomeData();
+    topVisited = getTopVisited();
     posterModel.then((value) => print(value));
+    topVisited.then((value) => print(value));
     super.initState();
   }
 
@@ -30,7 +36,7 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
         toolbarHeight: 63,
-        leading: Image.asset('assets/image/icon.png'),
+        leading: Image.asset('assets/icons/icon.png'),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -38,8 +44,6 @@ class _HomeState extends State<Home> {
           future: posterModel,
           builder: (BuildContext context, AsyncSnapshot<PosterModel> snapshot) {
             if (snapshot.hasData) {
-              print("ppppppppppppppppppppp");
-              print("Snapshote++= ${snapshot.data!.image}");
               return SizedBox(
                 width: double.infinity,
                 child: Padding(
@@ -86,73 +90,85 @@ class _HomeState extends State<Home> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(small),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Container(
-                                          width: 198,
-                                          height: 217,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(medium),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: Image.asset(
-                                                      "assets/image/elon-musk.png")
-                                                  .image,
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 2,
-                                          right: 2,
-                                          child: Container(
-                                            width: 84,
-                                            height: 33,
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewPost()));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(small),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            width: 198,
+                                            height: 217,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
                                               borderRadius:
-                                                  BorderRadius.circular(large),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Icon(
-                                                  Icons.visibility,
-                                                  color: titleColor,
-                                                ),
-                                                const Text(
-                                                  "126",
-                                                  style: Constant
-                                                      .textStyleHomeLabalRight,
-                                                ),
-                                              ],
+                                                  BorderRadius.circular(medium),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: Image.asset(
+                                                        "assets/image/elon-musk.png")
+                                                    .image,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Text(
-                                      "ایلان ماسک مدعی شده که می‌تواند در\n صورت لزوم تراشه نورالینک را...",
-                                      style: Constant.textStyleListViewText,
-                                    ),
-                                    const Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        "نویسنده : ساسان صفری",
-                                        style: Constant
-                                            .textStyleListViewCaptionText,
+                                          Positioned(
+                                            bottom: 2,
+                                            right: 2,
+                                            child: Container(
+                                              width: 84,
+                                              height: 33,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        large),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Icon(
+                                                    Icons.visibility,
+                                                    color: titleColor,
+                                                  ),
+                                                  const Text(
+                                                    "126",
+                                                    style: Constant
+                                                        .textStyleHomeLabalRight,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      const Text(
+                                        "ایلان ماسک مدعی شده که می‌تواند در\n صورت لزوم تراشه نورالینک را...",
+                                        style: Constant.textStyleListViewText,
+                                      ),
+                                      const Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          "نویسنده : ساسان صفری",
+                                          style: Constant
+                                              .textStyleListViewCaptionText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -169,16 +185,11 @@ class _HomeState extends State<Home> {
               return SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height,
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("please wait..."),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CircularProgressIndicator(),
-                  ],
+                child: Center(
+                  child: LoadingAnimationWidget.dotsTriangle(
+                    color: titleColor,
+                    size: 80,
+                  ),
                 ),
               );
             }

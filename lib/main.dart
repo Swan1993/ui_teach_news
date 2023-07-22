@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_teach_news/screen/home.dart';
+import 'package:ui_teach_news/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromRGBO(54, 135, 255, 1.0),
         scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
       ),
-      home: const Home(),
+      home: const SplashScreen(),
     );
   }
 }

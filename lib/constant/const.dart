@@ -46,4 +46,16 @@ class Constant {
     fontWeight: FontWeight.w500,
     color: Color.fromRGBO(194, 194, 194, 1),
   );
+
+  static const textStyleViewPostTitle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Color.fromRGBO(97, 97, 97, 1),
+  );
+
+  static const textStyleViewPostText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w300,
+    color: Color.fromRGBO(97, 97, 97, 1),
+  );
 }

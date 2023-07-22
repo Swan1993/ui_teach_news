@@ -1,12 +1,13 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:ui_teach_news/api_model/blog_model.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:ui_teach_news/constant/api_const.dart';
-
+/*
 class RemoteData {
+
   final Dio _dio = Dio();
 
   Future<dynamic> read({required String url}) async {
@@ -26,6 +27,8 @@ class RemoteData {
   }
 }
 
+*/
+
 Future<PosterModel> getHomeData() async {
   String url = ApiConst.mainScreenUrl;
 
@@ -36,6 +39,32 @@ Future<PosterModel> getHomeData() async {
     return PosterModel.fromMap(responseData);
   } else {
     throw Exception(
-        'Failed to load server. Status code: ${response.statusCode}');
+      'Failed to load server. Status code: ${response.statusCode}',
+    );
+  }
+}
+
+Future<BlogModel> getTopVisited() async {
+  String url = ApiConst.mainScreenUrl;
+
+  final response1 = await http.get(Uri.parse(url));
+
+  if (response1.statusCode == 200) {
+    Map<String, dynamic> responseData =
+        jsonDecode(response1.body) as Map<String, dynamic>;
+    List<dynamic> topVisitedList = responseData['top_visited'] as List<dynamic>;
+
+    if (topVisitedList.isNotEmpty) {
+      Map<String, dynamic> firstItem =
+          topVisitedList[0] as Map<String, dynamic>;
+      BlogModel blogModel = BlogModel.fromMap(firstItem);
+      return blogModel;
+    } else {
+      throw Exception('No data found in "top_visited" list.');
+    }
+  } else {
+    throw Exception(
+      'Failed to load server. Status code: ${response1.statusCode}',
+    );
   }
 }
