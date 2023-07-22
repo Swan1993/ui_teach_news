@@ -15,14 +15,25 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<PosterModel> posterModel;
-  late Future<BlogModel> topVisited;
+  late List<BlogModel> topVisited = [];
   @override
   void initState() {
     posterModel = getHomeData();
-    topVisited = getTopVisited();
-    posterModel.then((value) => print(value));
-    topVisited.then((value) => print(value));
+    loadTopVisited();
+
     super.initState();
+  }
+
+  Future<void> loadTopVisited() async {
+    try {
+      List<BlogModel> blogModel = await getTopVisited();
+      setState(() {
+        topVisited = blogModel;
+      });
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load server. Status code');
+    }
   }
 
   @override
@@ -86,10 +97,11 @@ class _HomeState extends State<Home> {
                         child: SizedBox(
                           height: size.height * 0.4,
                           child: ListView.builder(
-                            itemCount: 10,
+                            itemCount: topVisited.length,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
+                              final date = topVisited[index];
                               return InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -107,16 +119,16 @@ class _HomeState extends State<Home> {
                                       Stack(
                                         children: [
                                           Container(
-                                            width: 198,
+                                            width: size.width * 0.7,
                                             height: 217,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(medium),
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: Image.asset(
-                                                        "assets/image/elon-musk.png")
-                                                    .image,
+                                                image:
+                                                    Image.network(date.image!)
+                                                        .image,
                                               ),
                                             ),
                                           ),
@@ -141,8 +153,8 @@ class _HomeState extends State<Home> {
                                                     Icons.visibility,
                                                     color: titleColor,
                                                   ),
-                                                  const Text(
-                                                    "126",
+                                                  Text(
+                                                    date.view.toString(),
                                                     style: Constant
                                                         .textStyleHomeLabalRight,
                                                   ),
@@ -155,8 +167,8 @@ class _HomeState extends State<Home> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        "ایلان ماسک مدعی شده که می‌تواند در\n صورت لزوم تراشه نورالینک را...",
+                                      Text(
+                                        date.title ?? '',
                                         style: Constant.textStyleListViewText,
                                       ),
                                       const Align(
@@ -194,6 +206,20 @@ class _HomeState extends State<Home> {
               );
             }
           },
+        ),
+      ),
+      floatingActionButton: SizedBox(
+        height: 86,
+        width: 86,
+        child: FloatingActionButton(
+          elevation: 0,
+          backgroundColor: titleColor.withOpacity(0.8),
+          highlightElevation: 86,
+          onPressed: () {},
+          child: const Icon(
+            Icons.add,
+            size: 52,
+          ),
         ),
       ),
     );

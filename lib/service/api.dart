@@ -44,7 +44,7 @@ Future<PosterModel> getHomeData() async {
   }
 }
 
-Future<BlogModel> getTopVisited() async {
+Future<List<BlogModel>> getTopVisited() async {
   String url = ApiConst.mainScreenUrl;
 
   final response1 = await http.get(Uri.parse(url));
@@ -55,10 +55,10 @@ Future<BlogModel> getTopVisited() async {
     List<dynamic> topVisitedList = responseData['top_visited'] as List<dynamic>;
 
     if (topVisitedList.isNotEmpty) {
-      Map<String, dynamic> firstItem =
-          topVisitedList[0] as Map<String, dynamic>;
-      BlogModel blogModel = BlogModel.fromMap(firstItem);
-      return blogModel;
+      List<BlogModel> blogModels = topVisitedList
+          .map((item) => BlogModel.fromMap(item as Map<String, dynamic>))
+          .toList();
+      return blogModels;
     } else {
       throw Exception('No data found in "top_visited" list.');
     }
