@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:ui_teach_news/api_model/blog_model.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 import 'package:ui_teach_news/constant/const.dart';
+import 'package:ui_teach_news/screen/create_post.dart';
 import 'package:ui_teach_news/screen/view_post.dart';
 import 'package:ui_teach_news/service/api.dart';
 
@@ -215,7 +216,14 @@ class _HomeState extends State<Home> {
           elevation: 0,
           backgroundColor: titleColor.withOpacity(0.8),
           highlightElevation: 86,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NewPost(),
+              ),
+            );
+          },
           child: const Icon(
             Icons.add,
             size: 52,

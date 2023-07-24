@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ui_teach_news/api_model/blog_model.dart';
+import 'package:ui_teach_news/api_model/post_model.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 
 import 'package:http/http.dart' as http;
@@ -66,5 +67,28 @@ Future<List<BlogModel>> getTopVisited() async {
     throw Exception(
       'Failed to load server. Status code: ${response1.statusCode}',
     );
+  }
+}
+
+Future<PostModel> createPost(PostModel postModel) async {
+  final url = Uri.parse(
+      'https://maktabkhooneh.sasansafari.com/Maktabkhooneh/api/article/post.php');
+
+  try {
+    final response = await http.post(
+      url,
+      body: jsonEncode(postModel.toJson()),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return PostModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('خطا در ایجاد پست.');
+    }
+  } catch (e) {
+    // خطا در ارتباط با سرور
+    print('خطا: $e');
+    throw Exception('خطا در ارتباط با سرور.');
   }
 }

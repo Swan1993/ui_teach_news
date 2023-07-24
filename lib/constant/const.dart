@@ -12,10 +12,15 @@ const double bodymargin = 28.0;
 
 Color titleColor = const Color.fromRGBO(54, 135, 255, 1);
 
+List<Color> gradiantPost = [
+  const Color.fromRGBO(227, 227, 227, 1),
+  const Color.fromRGBO(255, 255, 255, 1),
+];
+
 class Constant {
   static const textStyleAppBar = TextStyle(
     fontSize: 16.2239990234375,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.bold,
   );
 
   static const textStyleHome = TextStyle(
@@ -53,9 +58,27 @@ class Constant {
     color: Color.fromRGBO(97, 97, 97, 1),
   );
 
-  static const textStyleViewPostText = TextStyle(
-    fontSize: 14,
+  static const textStyleNewPostText = TextStyle(
+    fontSize: 16,
     fontWeight: FontWeight.w300,
     color: Color.fromRGBO(97, 97, 97, 1),
+  );
+
+  static const textStyleNewPostPicBox = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Color.fromRGBO(97, 97, 97, 1),
+  );
+
+  static const textStyleNewPostHitStyle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Color.fromRGBO(97, 97, 97, 1),
+  );
+
+  static const textStyleNewPostBottom = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
 }

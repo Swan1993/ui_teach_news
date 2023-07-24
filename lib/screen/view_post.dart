@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_teach_news/component/appbar.dart';
 import 'package:ui_teach_news/constant/const.dart';
 
 class ViewPost extends StatelessWidget {
@@ -6,24 +7,7 @@ class ViewPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 63,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 26, top: 19),
-              child: Text(
-                'عنوان',
-                style: Constant.textStyleAppBar,
-              ),
-            )
-          ],
-        ),
+        appBar: Component.appBarViewPost(context),
         body: SizedBox(
           child: Column(
             children: [
