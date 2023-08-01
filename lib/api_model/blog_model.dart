@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:ui_teach_news/constant/api_const.dart';
-
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class BlogModel {
@@ -10,6 +8,7 @@ class BlogModel {
   String? image;
   int? view;
   String? status;
+  String? content;
   String? createdAt;
 
   BlogModel(
@@ -18,6 +17,7 @@ class BlogModel {
     this.image,
     this.view,
     this.status,
+    this.content,
     this.createdAt,
   );
 
@@ -27,6 +27,7 @@ class BlogModel {
     String? image,
     int? view,
     String? status,
+    String? content,
     String? createdAt,
   }) {
     return BlogModel(
@@ -35,6 +36,7 @@ class BlogModel {
       image ?? this.image,
       view ?? this.view,
       status ?? this.status,
+      content ?? this.content,
       createdAt ?? this.createdAt,
     );
   }
@@ -46,18 +48,20 @@ class BlogModel {
       'image': image,
       'view': view,
       'status': status,
+      'content': content,
       'createdAt': createdAt,
     };
   }
 
   factory BlogModel.fromMap(Map<String, dynamic> map) {
     return BlogModel(
-      map['id'] != null ? map['id'].toString() : null,
-      map['title'] != null ? map['title'].toString() : null,
-      ApiConst.baseUrl + (map['image'] ?? ''),
-      map['view'] != null ? int.parse(map['view'].toString()) : null,
-      map['status'] != null ? map['status'].toString() : null,
-      map['created_at'] != null ? map['created_at'].toString() : null,
+      map['id'] != null ? map['id'] as String : null,
+      map['title'] != null ? map['title'] as String : null,
+      map['image'] != null ? map['image'] as String : null,
+      map['view'] != null ? map['view'] as int : null,
+      map['status'] != null ? map['status'] as String : null,
+      map['content'] != null ? map['content'] as String : null,
+      map['createdAt'] != null ? map['createdAt'] as String : null,
     );
   }
 
@@ -68,7 +72,7 @@ class BlogModel {
 
   @override
   String toString() {
-    return 'BlogModel(id: $id, title: $title, image: $image, view: $view, status: $status, createdAt: $createdAt)';
+    return 'BlogModel(id: $id, title: $title, image: $image, view: $view, status: $status, content: $content, createdAt: $createdAt)';
   }
 
   @override
@@ -80,6 +84,7 @@ class BlogModel {
         other.image == image &&
         other.view == view &&
         other.status == status &&
+        other.content == content &&
         other.createdAt == createdAt;
   }
 
@@ -90,6 +95,7 @@ class BlogModel {
         image.hashCode ^
         view.hashCode ^
         status.hashCode ^
+        content.hashCode ^
         createdAt.hashCode;
   }
 }

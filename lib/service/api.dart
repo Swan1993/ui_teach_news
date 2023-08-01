@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:ui_teach_news/api_model/blog_model.dart';
 import 'package:ui_teach_news/api_model/post_model.dart';
 import 'package:ui_teach_news/api_model/poster_model.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:ui_teach_news/api_model/product_model.dart';
 import 'package:ui_teach_news/constant/api_const.dart';
+
 /*
 class RemoteData {
 
@@ -29,7 +30,7 @@ class RemoteData {
 }
 
 */
-
+// get
 Future<PosterModel> getHomeData() async {
   String url = ApiConst.mainScreenUrl;
 
@@ -44,6 +45,84 @@ Future<PosterModel> getHomeData() async {
     );
   }
 }
+
+// new
+
+Future<Product?> fetchProduct() async {
+  String url = ApiConst.mainScreenUrl;
+  var headersList = {
+    'Accept': '*/*',
+    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+  };
+
+  var req = http.Request('GET', Uri.parse(url));
+  req.headers.addAll(headersList);
+
+  var res = await req.send();
+  final resBody = await res.stream.bytesToString();
+
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    // پارس کردن رشته JSON به داده‌های Dart
+    final jsonData = jsonDecode(resBody);
+
+    // ایجاد نمونه از مدل Product با استفاده از تابع fromJson
+    final product = Product.fromJson(jsonData);
+
+    return product;
+  } else {
+    print(res.reasonPhrase);
+    return null; // یا مقدار دلخواهی که شما نیاز دارید در صورت بروز خطا
+  }
+}
+
+//post
+
+Future<Post> createPost(Post post) async {
+  var headersList = {
+    'Content-Type': 'application/json',
+    'Accept': '*/*',
+  };
+  var url = Uri.parse(ApiConst.postUrl);
+
+  var req = http.Request('POST', url);
+  req.headers.addAll(headersList);
+  req.body = jsonEncode(post.toJson()); // تبدیل داده‌ها به JSON
+
+  var res = await req.send();
+  final resBody = await res.stream.bytesToString();
+
+  if (res.statusCode >= 200 && res.statusCode < 300) {
+    final jsonData = jsonDecode(resBody);
+    final postModel = Post.fromJson(jsonData);
+    return postModel;
+  } else {
+    throw Exception('خطا در ایجاد پست: ${res.reasonPhrase}');
+  }
+}
+
+
+
+
+
+
+/*
+
+
+Future<BlogModel> getTopVisited() async {
+  String url = ApiConst.mainScreenUrl;
+
+  final response1 = await http.get(Uri.parse(url));
+
+  if (response1.statusCode == 200) {
+    return BlogModel.fromJson(jsonDecode(response1.body)['top_visited']['index']);
+  } else {
+    throw Exception('خطا در ارتباط با سرور.');
+  }
+}
+
+
+
+
 
 Future<List<BlogModel>> getTopVisited() async {
   String url = ApiConst.mainScreenUrl;
@@ -68,27 +147,4 @@ Future<List<BlogModel>> getTopVisited() async {
       'Failed to load server. Status code: ${response1.statusCode}',
     );
   }
-}
-
-Future<PostModel> createPost(PostModel postModel) async {
-  final url = Uri.parse(
-      'https://maktabkhooneh.sasansafari.com/Maktabkhooneh/api/article/post.php');
-
-  try {
-    final response = await http.post(
-      url,
-      body: jsonEncode(postModel.toJson()),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      return PostModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('خطا در ایجاد پست.');
-    }
-  } catch (e) {
-    // خطا در ارتباط با سرور
-    print('خطا: $e');
-    throw Exception('خطا در ارتباط با سرور.');
-  }
-}
+} */

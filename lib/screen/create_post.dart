@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ui_teach_news/api_model/post_model.dart';
 import 'package:ui_teach_news/component/appbar.dart';
 import 'package:ui_teach_news/constant/const.dart';
+import 'package:ui_teach_news/service/api.dart';
 
 class NewPost extends StatefulWidget {
   const NewPost({Key? key}) : super(key: key);
@@ -138,11 +139,10 @@ class _NewPostState extends State<NewPost> {
     }
   }
 
-  void addNewPost() {
+  Future<void> addNewPost() async {
     if (picPost == null) {
       setState(() {
         const snack = SnackBar(content: Text('لطفا یک تصویر انتخاب کنید'));
-
         ScaffoldMessenger.of(context).showSnackBar(snack);
         return;
       });
@@ -150,18 +150,33 @@ class _NewPostState extends State<NewPost> {
 
     if (controller.text.isEmpty) {
       const snack = SnackBar(content: Text("متن خود را وارد کنید"));
-
       ScaffoldMessenger.of(context).showSnackBar(snack);
       return;
     }
 
     final content = controller.text.trim();
 
-    final newPost = PostModel(
-      title: "",
+    final newData = Data(
+      title: null,
       content: content,
-      command: "",
+      command: null,
       image: picPost!.path,
     );
+
+    final newPost = Post(
+      success: true,
+      statusCode: 201,
+      msg: "new article stored",
+      data: newData,
+    );
+
+    try {
+      final createdPost = await createPost(newPost);
+      Navigator.pop(context);
+    } catch (e) {
+      print(e.toString());
+      final snack = SnackBar(content: Text('خطا در ایجاد پست: $e'));
+      ScaffoldMessenger.of(context).showSnackBar(snack);
+    }
   }
 }
