@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ui_teach_news/api_model/post_model.dart';
 import 'package:ui_teach_news/component/appbar.dart';
 import 'package:ui_teach_news/constant/const.dart';
-import 'package:ui_teach_news/service/api.dart';
 
 class NewPost extends StatefulWidget {
   const NewPost({Key? key}) : super(key: key);
@@ -27,27 +25,58 @@ class _NewPostState extends State<NewPost> {
           InkWell(
             onTap: () => reciveMyImage(mySource: ImageSource.gallery),
             child: picPost != null
-                ? Container(
-                    alignment: Alignment.center,
-                    height: 278,
-                    width: double.maxFinite,
-                    margin: const EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: gradiantPost,
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                ? Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: 278,
+                        width: double.maxFinite,
+                        margin: const EdgeInsets.all(15.0),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: gradiantPost,
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey.shade400,
+                          ),
+                          borderRadius: BorderRadius.circular(12.0),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(picPost!),
+                          ),
+                        ),
                       ),
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey.shade400,
-                      ),
-                      borderRadius: BorderRadius.circular(12.0),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(picPost!),
-                      ),
-                    ),
+                      Positioned(
+                        top: 15,
+                        bottom: 15,
+                        right: 16,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              picPost = null;
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.08,
+                            height: 230,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.0),
+                                bottomRight: Radius.circular(12.0),
+                              ),
+                              color: Colors.black54,
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 : Container(
                     alignment: Alignment.center,
@@ -155,20 +184,23 @@ class _NewPostState extends State<NewPost> {
     }
 
     final content = controller.text.trim();
+/*
+ final newData = {
+  "title": null,
+  "content": content,
+  "command": null,
+  "image": picPost!.path,
+};
 
-    final newData = Data(
-      title: null,
-      content: content,
-      command: null,
-      image: picPost!.path,
-    );
 
-    final newPost = Post(
-      success: true,
-      statusCode: 201,
-      msg: "new article stored",
-      data: newData,
-    );
+final newPost = Post(
+  success: true,
+  statusCode: 201,
+  msg: "new article stored",
+  data: newData, // از مپ خالی برای data استفاده کنید.
+);
+
+
 
     try {
       final createdPost = await createPost(newPost);
@@ -177,6 +209,6 @@ class _NewPostState extends State<NewPost> {
       print(e.toString());
       final snack = SnackBar(content: Text('خطا در ایجاد پست: $e'));
       ScaffoldMessenger.of(context).showSnackBar(snack);
-    }
+    }*/
   }
 }

@@ -84,19 +84,18 @@ Future<Post> createPost(Post post) async {
   };
   var url = Uri.parse(ApiConst.postUrl);
 
-  var req = http.Request('POST', url);
-  req.headers.addAll(headersList);
-  req.body = jsonEncode(post.toJson()); // تبدیل داده‌ها به JSON
+  var response = await http.post(
+    url,
+    headers: headersList,
+    body: jsonEncode(post.toJson()),
+  );
 
-  var res = await req.send();
-  final resBody = await res.stream.bytesToString();
-
-  if (res.statusCode >= 200 && res.statusCode < 300) {
-    final jsonData = jsonDecode(resBody);
+  if (response.statusCode >= 200 && response.statusCode < 300) {
+    final jsonData = jsonDecode(response.body);
     final postModel = Post.fromJson(jsonData);
     return postModel;
   } else {
-    throw Exception('خطا در ایجاد پست: ${res.reasonPhrase}');
+    throw Exception('خطا در ایجاد پست: ${response.reasonPhrase}');
   }
 }
 

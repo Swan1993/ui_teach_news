@@ -1,4 +1,5 @@
 //standard size
+
 import 'package:flutter/material.dart';
 
 const double zero = 0;
@@ -16,6 +17,8 @@ List<Color> gradiantPost = [
   const Color.fromRGBO(227, 227, 227, 1),
   const Color.fromRGBO(255, 255, 255, 1),
 ];
+
+//mediaQury
 
 class Constant {
   static const textStyleAppBar = TextStyle(

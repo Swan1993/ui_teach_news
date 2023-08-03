@@ -136,6 +136,7 @@ class Data {
     required this.content,
     this.command,
     required this.image,
+    required,
   });
 
   Data copyWith({
