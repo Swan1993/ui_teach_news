@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+//lib
 import 'package:flutter/material.dart';
-
+//widget
 import 'package:ui_teach_news/component/appbar.dart';
+//const
 import 'package:ui_teach_news/constant/const.dart';
 
 class ViewPost extends StatelessWidget {
@@ -24,7 +26,7 @@ class ViewPost extends StatelessWidget {
     // Get the post information based on the index
 
     return Scaffold(
-      appBar: Component.appBarViewPost(context),
+      appBar: Component.appBarViewPost(context, 'عنوان'),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(

@@ -1,3 +1,4 @@
+//lib
 import 'package:flutter/material.dart';
 import 'package:ui_teach_news/splash_screen.dart';
 

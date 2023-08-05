@@ -1,7 +1,7 @@
-//standard size
-
+//lib
 import 'package:flutter/material.dart';
 
+//standard size
 const double zero = 0;
 const double small = 8.0;
 const double medium = 12.0;
@@ -83,5 +83,11 @@ class Constant {
     fontSize: 15,
     fontWeight: FontWeight.w500,
     color: Colors.white,
+  );
+
+  static const textStyleAllPageText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Color.fromRGBO(97, 97, 97, 1),
   );
 }

@@ -1,10 +1,17 @@
+//lib
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+
+//model
 import 'package:ui_teach_news/api_model/post_model.dart';
+
 import 'package:ui_teach_news/api_model/poster_model.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:ui_teach_news/api_model/product_model.dart';
+
+//const
+
 import 'package:ui_teach_news/constant/api_const.dart';
 
 /*

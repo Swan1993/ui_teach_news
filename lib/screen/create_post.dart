@@ -1,8 +1,12 @@
+//lib
+import 'package:flutter/material.dart';
+
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+//widget
 import 'package:ui_teach_news/component/appbar.dart';
+//const
 import 'package:ui_teach_news/constant/const.dart';
 
 class NewPost extends StatefulWidget {
@@ -171,14 +175,14 @@ class _NewPostState extends State<NewPost> {
   Future<void> addNewPost() async {
     if (picPost == null) {
       setState(() {
-        const snack = SnackBar(content: Text('لطفا یک تصویر انتخاب کنید'));
+        const snack = SnackBar(content: Text('.لطفا یک تصویر انتخاب کنید'));
         ScaffoldMessenger.of(context).showSnackBar(snack);
         return;
       });
     }
 
     if (controller.text.isEmpty) {
-      const snack = SnackBar(content: Text("متن خود را وارد کنید"));
+      const snack = SnackBar(content: Text(".متن خود را وارد کنید"));
       ScaffoldMessenger.of(context).showSnackBar(snack);
       return;
     }

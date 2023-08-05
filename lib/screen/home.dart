@@ -1,11 +1,25 @@
-import 'package:carousel_slider/carousel_slider.dart';
+//lib
 import 'package:flutter/material.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+//model
 import 'package:ui_teach_news/api_model/poster_model.dart';
+
 import 'package:ui_teach_news/api_model/product_model.dart';
+//widget
+import 'package:ui_teach_news/widget/view_widget.dart';
+
+//const
 import 'package:ui_teach_news/constant/const.dart';
-import 'package:ui_teach_news/screen/create_post.dart';
+//page
 import 'package:ui_teach_news/screen/view_post.dart';
+
+import 'package:ui_teach_news/screen/create_post.dart';
+
+import 'package:ui_teach_news/screen/all_post_view.dart';
+//api
 import 'package:ui_teach_news/service/api.dart';
 
 class Home extends StatefulWidget {
@@ -71,14 +85,24 @@ class _HomeState extends State<Home> {
                         style: Constant.textStyleHome,
                       ),
                       const SizedBox(height: large),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "مشاهده همه",
-                            style: Constant.textStyleHomeLabalLeft,
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AllPostView(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              "مشاهده همه",
+                              style: Constant.textStyleHomeLabalLeft,
+                            ),
                           ),
-                          Text(
+                          const Text(
                             "جدید ترین مطالب",
                             style: Constant.textStyleHomeLabalRight,
                           ),
@@ -100,20 +124,24 @@ class _HomeState extends State<Home> {
                                 Product blogModel = snapshot.data!;
 
                                 return CarouselSlider(
-                                  items: List.generate(
-                                      blogModel.topVisited.length, (index) {
-                                    final item = blogModel.topVisited[index];
-                                    return InkWell(
+                                  items: [
+                                    InkWell(
                                       onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ViewPost(
-                                              index: index,
-                                              image: item.image,
-                                              title: item.title,
-                                              contant: item.content.toString(),
-                                              view: item.view.toString(),
+                                              index:
+                                                  0, // یا هر شماره‌ای که برای آیتم اول قرار دهید
+                                              image:
+                                                  blogModel.topVisited[0].image,
+                                              title:
+                                                  blogModel.topVisited[0].title,
+                                              contant: blogModel
+                                                  .topVisited[0].content
+                                                  .toString(),
+                                              view: blogModel.topVisited[0].view
+                                                  .toString(),
                                             ),
                                           ),
                                         );
@@ -136,7 +164,9 @@ class _HomeState extends State<Home> {
                                                     image: DecorationImage(
                                                       fit: BoxFit.cover,
                                                       image: Image.network(
-                                                              item.image)
+                                                              blogModel
+                                                                  .topVisited[0]
+                                                                  .image)
                                                           .image,
                                                     ),
                                                   ),
@@ -144,32 +174,9 @@ class _HomeState extends State<Home> {
                                                 Positioned(
                                                   bottom: 2,
                                                   right: 2,
-                                                  child: Container(
-                                                    width: 84,
-                                                    height: 33,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              large),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.visibility,
-                                                          color: titleColor,
-                                                        ),
-                                                        Text(
-                                                          item.view,
-                                                          style: Constant
-                                                              .textStyleHomeLabalRight,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  child: ViewWidget(
+                                                      item: blogModel
+                                                          .topVisited[0]),
                                                 ),
                                               ],
                                             ),
@@ -177,7 +184,7 @@ class _HomeState extends State<Home> {
                                               height: 5,
                                             ),
                                             Text(
-                                              item.title,
+                                              blogModel.topVisited[0].title,
                                               style: Constant
                                                   .textStyleListViewText,
                                             ),
@@ -192,14 +199,14 @@ class _HomeState extends State<Home> {
                                           ],
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
+                                    ),
+                                  ],
                                   options: CarouselOptions(
-                                    autoPlay: true,
-                                    enlargeCenterPage: true,
+                                    autoPlay: false,
+                                    enlargeCenterPage: false,
                                     height: MediaQuery.of(context).size.height *
-                                        0.42,
-                                    viewportFraction: 0.7,
+                                        0.5,
+                                    viewportFraction: 0.85,
                                   ),
                                 );
                               } else if (snapshot.hasError) {
@@ -221,11 +228,21 @@ class _HomeState extends State<Home> {
               return SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: LoadingAnimationWidget.dotsTriangle(
-                    color: titleColor,
-                    size: 80,
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LoadingAnimationWidget.dotsTriangle(
+                      color: titleColor,
+                      size: 80,
+                    ),
+                    const SizedBox(
+                      height: large,
+                    ),
+                    const Text(
+                      "لطفا صبر کنید...",
+                      textDirection: TextDirection.rtl,
+                    )
+                  ],
                 ),
               );
             }
@@ -256,104 +273,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-
-/* 
-ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: blogModel.topVisited.length,
-                                  itemBuilder: (context, index) {
-                                    final item = blogModel.topVisited[index];
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ViewPost(
-                                              index: index,
-                                              image: item.image,
-                                              title: item.title,
-                                              contant: item.content.toString(),
-                                              view: item.view.toString(),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(small),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Stack(
-                                              children: [
-                                                Container(
-                                                  width: size.width * 0.7,
-                                                  height: 217,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            medium),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: Image.network(
-                                                              item.image)
-                                                          .image,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  bottom: 2,
-                                                  right: 2,
-                                                  child: Container(
-                                                    width: 84,
-                                                    height: 33,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              large),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.visibility,
-                                                          color: titleColor,
-                                                        ),
-                                                        Text(
-                                                          item.view,
-                                                          style: Constant
-                                                              .textStyleHomeLabalRight,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              item.title,
-                                              style: Constant
-                                                  .textStyleListViewText,
-                                            ),
-                                            const Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Text(
-                                                "نویسنده : ساسان صفری",
-                                                style: Constant
-                                                    .textStyleListViewCaptionText,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-*/

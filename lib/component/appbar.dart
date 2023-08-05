@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_teach_news/constant/const.dart';
 
 class Component {
-  static PreferredSizeWidget? appBarViewPost(BuildContext context) {
+  static PreferredSizeWidget? appBarViewPost(
+      BuildContext context, String title) {
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: 63,
@@ -11,11 +12,11 @@ class Component {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios)),
-      actions: const [
+      actions: [
         Padding(
-          padding: EdgeInsets.only(right: 26, top: 19),
+          padding: const EdgeInsets.only(right: 26, top: 19),
           child: Text(
-            'عنوان',
+            title,
             style: Constant.textStyleAppBar,
           ),
         )
