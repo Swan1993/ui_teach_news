@@ -32,10 +32,19 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late Future<PosterModel> posterModel;
   late Future<Product?> topVisited;
+  int listLength = 0;
   @override
   void initState() {
     posterModel = getHomeData();
     topVisited = fetchProduct();
+
+    topVisited.then((value) {
+      if (value != null) {
+        setState(() {
+          listLength = value.topVisited.length; // مقداردهی به متغیر listLength
+        });
+      }
+    });
 
     super.initState();
   }
@@ -102,12 +111,13 @@ class _HomeState extends State<Home> {
                               style: Constant.textStyleHomeLabalLeft,
                             ),
                           ),
-                          const Text(
-                            "جدید ترین مطالب",
+                          Text(
+                            "جدید ترین مطالب ($listLength)",
                             style: Constant.textStyleHomeLabalRight,
                           ),
                         ],
                       ),
+                      const SizedBox(height: large),
                       Directionality(
                         textDirection: TextDirection.rtl,
                         child: SizedBox(
@@ -217,7 +227,7 @@ class _HomeState extends State<Home> {
                             },
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
